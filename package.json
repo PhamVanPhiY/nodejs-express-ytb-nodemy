@@ -1,0 +1,24 @@
+{
+  "name": "nodejs-express-ytb",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Phi Pham",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PhamVanPhiY/nodejs-express-ytb-nodemy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PhamVanPhiY/nodejs-express-ytb-nodemy/issues"
+  },
+  "homepage": "https://github.com/PhamVanPhiY/nodejs-express-ytb-nodemy#readme",
+  "description": ""
+}
