@@ -1,32 +1,74 @@
 var express = require("express");
 var app = express();
-var route1 = require("./apiRoute.js");
+var bodyParser = require("body-parser");
+var accountRouter = require("./routes/account");
 
-// route1.get("/nancy", (req, res, next) => {
-//   res.json("nancy 1 ");
-// });
-// route1.get("/momoland", (req, res, next) => {
-//   res.json("momoland");
-// });
-var a = "";
-var check = (req, res, next) => {
-  if (req.params.id == 1) {
-    a = "admin";
-    next();
-  } else {
-    a = "user";
-    next();
-  }
-};
+const AccountModel = require("./models/account");
+const mongoose = require("mongoose");
 
-var hello = (req, res, next) => {
-  res.json(req.params.id + "Hello  moi nguoi" + req.params.stt);
-};
+// var route1 = require("./apiRoute.js");
 
-app.get("/:id", check, hello);
-app.get("/:id/:stt/", check, hello);
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 
-// app.use("/api/", route1);
+// parse application/json
+app.use(bodyParser.json());
+
+app.get("/", (req, res, next) => {
+  res.json("trang chu ");
+});
+
+// register
+app.post("/register", (req, res, next) => {
+  // If you want to read the data (body) ,  you must have body-parser
+  var username = req.body.username;
+  var password = req.body.password;
+
+  AccountModel.findOne({
+    username: username,
+  })
+    .then((data) => {
+      if (data) {
+        res.json("tai khoan nay da ton tai trong db");
+      } else {
+        return AccountModel.create({
+          username: username,
+          password: password,
+        });
+      }
+    })
+    // then (data )  ở đây thích là từ else return trả về .
+    .then((data) => {
+      res.json("tao tai khoan thah cong ");
+    })
+    .catch((err) => {
+      res.status(500).json("tao tai khoan that bai");
+    });
+});
+
+// login
+
+app.post("/login", (req, res, next) => {
+  var username = req.body.username;
+  var password = req.body.password;
+
+  AccountModel.findOne({
+    username: username,
+    password: password,
+  })
+    .then((data) => {
+      if (data) {
+        res.json("Dang nhap thanh cong");
+      } else {
+        res.json("Dang nhap that bai");
+      }
+    })
+    .catch((err) => {
+      res.status(500).json("Co loi phia server");
+    });
+});
+
+app.use("/api/account/", accountRouter);
 
 app.listen(3000, () => {
   console.log("Hello ae ");
